@@ -36,10 +36,10 @@ export default function LoginForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+  
       const data = await res.json();
-
+  
       if (!res.ok) {
-        // Toast destructivo caso seja erro
         toast({
           variant: "destructive",
           title: "Erro no login",
@@ -47,16 +47,19 @@ export default function LoginForm() {
         });
         return;
       }
-
-      // Sucesso
+  
+      // ✅ Salvar e-mail no localStorage após login bem-sucedido
+      localStorage.setItem("userEmail", email);
+  
+      // Toast de sucesso
       toast({
         title: "Login realizado com sucesso!",
         description: data.message || "Seja bem-vindo(a)!",
-        variant:"success"
+        variant: "success",
       });
-
+  
       // Redirecionar
-      window.location.href = "/pagamento";
+      window.location.href = "/gestao-de-clientes";
     } catch (error) {
       console.error(error);
       toast({
@@ -66,6 +69,7 @@ export default function LoginForm() {
       });
     }
   }
+  
 
   return (
     <Card className="w-full max-w-md">

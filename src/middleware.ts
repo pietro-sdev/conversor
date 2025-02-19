@@ -15,5 +15,5 @@ export function middleware(req: NextRequest) {
 
 // Configura quais rotas devem ser protegidas pelo middleware
 export const config = {
-  matcher: "/pagamento", // Protege a rota /pagamento
+  matcher: ["/pagamento", "/gestao-de-clientes"], // Protege as rotas /pagamento e /gestao-de-clientes
 };
