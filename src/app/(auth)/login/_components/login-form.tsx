@@ -59,7 +59,7 @@ export default function LoginForm() {
       });
   
       // Redirecionar
-      window.location.href = "/gestao-de-clientes";
+      window.location.href = "/home";
     } catch (error) {
       console.error(error);
       toast({

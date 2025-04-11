@@ -11,6 +11,8 @@ import { ServicesSection } from "@/components/layout/sections/services";
 import { SponsorsSection } from "@/components/layout/sections/sponsors";
 import { TeamSection } from "@/components/layout/sections/team";
 import { TestimonialSection } from "@/components/layout/sections/testimonial";
+import { ExampleSection } from "@/components/layout/sections/example";
+
 
 export const metadata = {
   title: "Conversor",
@@ -47,6 +49,7 @@ export default function Home() {
       <HeroSection />
       <FeaturesSection/>
       <ServicesSection/>
+      <ExampleSection/>
       <TestimonialSection/>
       <FAQSection/>
       <Newsletter/>

@@ -7,7 +7,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Menu, Search, LogOut, Briefcase, Calculator } from "lucide-react";
+import {
+  ChevronDown,
+  Menu,
+  Search,
+  LogOut,
+  Briefcase,
+  Calculator,
+  Home,
+} from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -33,17 +41,17 @@ export default function Navbar() {
   useEffect(() => {
     async function fetchUser() {
       const email = localStorage.getItem("userEmail"); // Pegue o email do usuário logado
-  
+
       if (!email) {
         console.error("Usuário não autenticado");
         setFullName("Usuário");
         return;
       }
-  
+
       try {
         const response = await fetch(`/api/users/fullname?email=${encodeURIComponent(email)}`);
         if (!response.ok) throw new Error("Erro ao buscar usuário");
-  
+
         const data = await response.json();
         setFullName(data.name);
       } catch (error) {
@@ -51,7 +59,7 @@ export default function Navbar() {
         setFullName("Usuário");
       }
     }
-  
+
     fetchUser();
   }, []);
 
@@ -79,10 +87,18 @@ export default function Navbar() {
         {/* Navigation Links */}
         <ul className="hidden sm:flex items-center gap-2 font-semibold">
           <li>
+            <Link href={'/home'}>
+              <Button variant="ghost" size="default" className="font-semibold hover:text-black transition">
+                <Home className="w-4 h-4 font-semibold" />
+                Home
+              </Button>
+            </Link>
+          </li>
+          <li>
             <Link href={'/gestao-de-clientes'}>
               <Button variant="ghost" size="default" className="font-semibold hover:text-black transition">
                 <Briefcase className="w-4 h-4 font-semibold" />
-                Gestão de Clientes
+                Minha Gestão
               </Button>
             </Link>
           </li>
@@ -103,8 +119,14 @@ export default function Navbar() {
             <ul className="mt-4 flex flex-col gap-4 text-sm font-medium text-sidebar-primary-foreground">
               <li>
                 <Button variant="ghost" className="hover:text-black transition">
-                  <Calculator className="w-4 h-4 " />
-                  Gestão de Clientes
+                  <Home className="w-4 h-4" />
+                  Home
+                </Button>
+              </li>
+              <li>
+                <Button variant="ghost" className="hover:text-black transition">
+                  <Calculator className="w-4 h-4" />
+                  Minha Gestão
                 </Button>
               </li>
             </ul>

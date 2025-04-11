@@ -59,14 +59,12 @@ export default function GestaoCliente() {
 
   return (
     <div className={`${nunito.className} p-8 min-h-screen`}>
-      {/* Header com Avatar e Título */}
       <header className="flex flex-col items-center mb-10">
         <Avatar className="w-20 h-20 mb-4">
-          {/* Caso o usuário possua imagem de perfil, exiba-a; caso contrário, use o fallback */}
           <AvatarImage src="/avatar-placeholder.png" alt="Avatar do Cliente" />
           <AvatarFallback>{cliente?.name ? cliente.name[0].toUpperCase() : "U"}</AvatarFallback>
         </Avatar>
-        <h1 className="text-4xl font-bold mb-2 text-center">Gestão de Clientes</h1>
+        <h1 className="text-4xl font-bold mb-2 text-center">Minha Conta</h1>
         {cliente && (
           <Badge variant="secondary" className="text-lg">
             {cliente.name || "Usuário"}
@@ -76,7 +74,6 @@ export default function GestaoCliente() {
 
       {cliente ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {/* Card de Dados de Cadastro */}
           <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="text-2xl font-semibold">Dados de Cadastro</CardTitle>
@@ -99,7 +96,6 @@ export default function GestaoCliente() {
             </CardContent>
           </Card>
 
-          {/* Card de Assinatura */}
           <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="text-2xl font-semibold">Assinatura</CardTitle>
@@ -116,9 +112,12 @@ export default function GestaoCliente() {
                   ? new Date(cliente.assinatura.expiraEm).toLocaleDateString()
                   : "Sem assinatura ativa"}
               </p>
-              <Button variant="outline" size="sm" className="mt-2">
-                Renovar Assinatura
-              </Button>
+              <div className="justify-between">
+                <Button variant="outline" size="sm" className="mt-2 mr-2">
+                  Renovar Assinatura
+                </Button>
+                <Button className="mt-2" size={"sm"} variant="destructive">Cancelar Assinatura</Button>
+              </div>
             </CardContent>
           </Card>
         </div>
