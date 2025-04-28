@@ -1,11 +1,48 @@
 'use client'
-import { useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { useState } from 'react'
+import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardTitle } from '@/components/ui/card'
 
 export const ExampleSection = () => {
-  const [labelCode, setLabelCode] = useState("^XA\n^FO50,50^ADN,36,20^FDHello, World!^FS\n^XZ");
+  const [labelCode, setLabelCode] = useState(
+    '^XA\n^FO50,50^ADN,36,20^FDHello, World!^FS\n^XZ',
+  )
+  const [preview, setPreview] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  async function gerarPreview() {
+    setLoading(true)
+    setPreview(null)
+
+    const payload = {
+      dpi: 203,
+      zplCommands: btoa(labelCode),      // Base64
+      labelWidthInchUnit: 4,
+      labelHeightInchUnit: 6,
+      format: 'PNG',
+      demo: false,
+      isZplCommandsBase64: true,
+    }
+
+    try {
+      const res = await fetch('/api/print', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (!res.ok) throw new Error(`Erro ${res.status}`)
+
+      const blob = await res.blob()
+      setPreview(URL.createObjectURL(blob))
+    } catch (err) {
+      alert('Falha ao gerar etiqueta – verifique o console.')
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <section className="container py-24 sm:py-32">
@@ -28,7 +65,13 @@ export const ExampleSection = () => {
               value={labelCode}
               onChange={(e) => setLabelCode(e.target.value)}
             />
-            <Button className=" bg-[#2C3E50] mt-4 w-full font-semibold">Atualizar Visualização</Button>
+            <Button
+              onClick={gerarPreview}
+              disabled={loading}
+              className="bg-[#2C3E50] mt-4 w-full font-semibold"
+            >
+              {loading ? 'Gerando…' : 'Atualizar Visualização'}
+            </Button>
           </CardContent>
         </Card>
 
@@ -36,10 +79,17 @@ export const ExampleSection = () => {
         <Card className="bg-white border border-gray-200 shadow-lg rounded-2xl p-6 flex flex-col items-center justify-center">
           <CardTitle className="text-lg font-semibold mb-4">Visualização</CardTitle>
           <CardContent className="w-full h-64 bg-gray-100 flex items-center justify-center">
-            <span className="text-gray-500">Pré-visualização da etiqueta</span>
+            {preview ? (
+              // PNG retornado pelo backend
+              <img src={preview} alt="Preview da etiqueta" className="max-h-full" />
+            ) : (
+              <span className="text-gray-500">
+                {loading ? 'Carregando…' : 'Pré-visualização da etiqueta'}
+              </span>
+            )}
           </CardContent>
         </Card>
       </div>
     </section>
-  );
-};
+  )
+}
