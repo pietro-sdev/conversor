@@ -13,12 +13,12 @@ export async function POST(req: NextRequest) {
     const body = await req.text()
 
     const {
-      AWS_REGION,
+      REGION,
       ZPL_API_HOST,         // ex.: ynpcnv1khh.execute-api.sa-east-1.amazonaws.com
       ZPL_STAGE = 'prod',   // estágio do API Gateway
     } = process.env
 
-    if (!AWS_REGION || !ZPL_API_HOST) {
+    if (!REGION || !ZPL_API_HOST) {
       return NextResponse.json(
         { message: 'Variáveis de ambiente AWS_REGION e ZPL_API_HOST faltando.' },
         { status: 500 },
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     // --- assina com SigV4 ---
     const signer = new SignatureV4({
       service: 'execute-api',
-      region: AWS_REGION,
+      region: REGION,
       credentials: defaultProvider(),
       sha256: Sha256,
     })
